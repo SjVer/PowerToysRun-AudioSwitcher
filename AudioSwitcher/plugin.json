@@ -1,0 +1,14 @@
+{
+  "ID": "472a863a-949c-4bd5-b1d6-2cde31280d08",
+  "ActionKeyword": "au",
+  "Disabled": false,
+  "IsGlobal": false,
+  "Name": "AudioSwitcher",
+  "Author": "SjVer",
+  "Version": "1.0.0",
+  "Language": "csharp",
+  "Website": "",
+  "ExecuteFileName": "Community.PowerToys.Run.Plugin.AudioSwitcher.dll",
+  "IcoPathDark": "Images\\AudioSwitcher.dark.png",
+  "IcoPathLight": "Images\\AudioSwitcher.light.png"
+}
