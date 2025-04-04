@@ -3,28 +3,31 @@ $inkscapeExe = "C:\Program Files\WindowsApps\25415Inkscape.Inkscape_1.3.2.0_x64_
 $fontName = "Segoe Fluent Icons"
 $size = 128
 $dpi = 300
+$darkColor = "#FFFFFF"
+$lightColor = "#000000"
 
-function Export-Char {
+function Export-Char-Internal {
     param (
         [string]$code,
-        [string]$name
+        [string]$name,
+        [string]$color
     )
-    
-    $tempSvg = New-TemporaryFile
+
     $outputPng = "Images/Generated/$name.png"
+    $tempSvg = New-TemporaryFile
     
     # Create a simple SVG file with just the character
     $svgContent = @"
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="$size" height="$size">
-    <text x="50%" y="$($size - 1)" text-anchor="middle" 
+    <text x="50%" y="$($size - 1)" text-anchor="middle" fill="$color"
     font-family="$fontName" font-size="$($size - 2)">&#x$code;</text>
 </svg>
 "@
 
     # Save the SVG content to a file
     $svgContent | Out-File -FilePath $tempSvg -Encoding utf8
-    
+
     # Convert SVG to PNG using Inkscape
     Start-Process -Wait $inkscapeExe -ArgumentList --export-filename="$outputPng", --export-dpi=$dpi, $tempSvg
     if ($?) {
@@ -32,9 +35,18 @@ function Export-Char {
     } else {
         Write-Host "Failed to export $code"
     }
-    
+
     # Clean up the temporary SVG file
     Remove-Item $tempSvg
+}
+
+function Export-Char {
+    param (
+        [string]$code,
+        [string]$name
+    )
+    Export-Char-Internal $code "$name.light" $lightColor
+    Export-Char-Internal $code "$name.dark" $darkColor
 }
 
 Export-Char "e9ce" "Unknown"

@@ -1,18 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 using CoreAudioApi;
-using System.Windows.Documents;
 using ManagedCommon;
 using Microsoft.PowerToys.Settings.UI.Library;
-using Wox.Infrastructure;
 using Wox.Plugin;
-using Wox.Plugin.Logger;
-using System.Diagnostics;
 
 namespace Community.PowerToys.Run.Plugin.AudioSwitcher
 {
@@ -46,6 +36,8 @@ namespace Community.PowerToys.Run.Plugin.AudioSwitcher
     public class Main : IPlugin, IPluginI18n, IContextMenu, ISettingProvider, IReloadable, IDisposable, IDelayedExecutionPlugin
     {
         private const string Setting = nameof(Setting);
+        
+        private string iconTheme = "light";
 
         // current value of the setting
         private bool _setting;
@@ -101,7 +93,7 @@ namespace Community.PowerToys.Run.Plugin.AudioSwitcher
 
                 results.Add(new Result
                 {
-                    IcoPath = $"Images\\Generated\\{device.DeviceDescription}.png",
+                    IcoPath = $"Images\\Generated\\{device.DeviceDescription}.{iconTheme}.png",
                     Title = device.DeviceName,
                     SubTitle = device.FriendlyName + useFor,
 
@@ -159,10 +151,12 @@ namespace Community.PowerToys.Run.Plugin.AudioSwitcher
         {
             if (theme == Theme.Light || theme == Theme.HighContrastWhite)
             {
+                iconTheme = "light";
                 _iconPath = "Images/AudioSwitcher.light.png";
             }
             else
             {
+                iconTheme = "dark";
                 _iconPath = "Images/AudioSwitcher.dark.png";
             }
         }
